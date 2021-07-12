@@ -33,8 +33,8 @@ function writeToScreen(string) {
 }
 
 websocket.onmessage = (e) => {
-    //result = JSON.parse(e.data).result;
     let result = JSON.parse(e.data).expression;
+
     document.getElementById("results").value += "Server: " + result + "\n";
 }
 
@@ -62,7 +62,14 @@ document.querySelector("#submit").onclick = (e) => {
 
 window.addEventListener("load", init, false);
 
+let payload = {setAttribute: [{selector: "#progress-bar", name: "style", value: "width: 60%"}]}
+let payloadComplete = {"identifier": "{\"channel\":\"StimulusReflex::Channel\"}", "type": "message", "cableReady": true, "operations": {"setAttribute": [{"selector": "#progress-bar", "name": "style", "value": "width: 110%"}]}}
+CableReady.perform(payload);
 
 
-CableReady.perform('morph')
+
+
+
+
+
 

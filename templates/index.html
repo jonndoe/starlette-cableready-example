@@ -34,7 +34,20 @@
     <input type="button" class="btn btn-primary btn-lg" id="submit" value="Send">
     <hr><br>
 
+    <h3>This progress bar is updated Automatically by server upon receiving client connection.</h3>
+    <h1>Progress Bar with CableReady</h1>
 
+    <div class="progress">
+      <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+           role="progressbar"
+           aria-valuenow="75"
+           aria-valuemin="0"
+           aria-valuemax="100"
+           style="width: 10%;"><b>{{ status }} %</b>
+      </div>
+    </div>
+
+    <hr><br>
 
     <!-- Example row of columns -->
     <div class="row">
