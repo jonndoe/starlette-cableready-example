@@ -27,7 +27,7 @@ routes = [
 ]
 
 app = Starlette(routes=routes)
-app.mount('/static', StaticFiles(directory='statics'), name='static')
+app.mount('/static', StaticFiles(directory='static'), name='static')
 
 
 @app.route('/')
