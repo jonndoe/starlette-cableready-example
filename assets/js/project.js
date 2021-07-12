@@ -1,9 +1,9 @@
 //project.js
 'use strict'
 
+
+import CableReady from 'cable_ready'
 console.log('Entered project.js file!!!');
-
-
 
 //let wsUri = "ws://echo.websocket.org/";
 //let wsUri = "ws://localhost:8003/ws/cr-sync/";
@@ -61,4 +61,8 @@ document.querySelector("#submit").onclick = (e) => {
 }
 
 window.addEventListener("load", init, false);
+
+
+
+CableReady.perform('morph')
 
