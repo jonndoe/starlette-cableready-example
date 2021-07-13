@@ -8,6 +8,7 @@ from starlette.routing import WebSocketRoute
 import uvicorn
 import logging
 import json
+import time
 
 
 logger = logging.getLogger(__name__)
@@ -19,7 +20,14 @@ class Echo(WebSocketEndpoint):
 
     async def on_receive(self, websocket, data):
         datajson = json.loads(data)
-        await websocket.send_json({"expression" : datajson['expression']})
+        try:
+            datajson['expression'] == True
+            await websocket.send_json({"expression": datajson['expression']})
+        except Exception as e:
+            status = 10
+            for i in range(10):
+                await websocket.send_json({"setAttribute": [{"selector": "#progress-bar", "name": "style", "value": f"width:{status}%"}]})
+                status += 10
 
 
 routes = [
