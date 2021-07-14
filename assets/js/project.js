@@ -79,7 +79,8 @@ function sleepThenAct(){
 }
 
 document.querySelector("#load-bar").onclick = () => {
-    sleepThenAct();
+    //sleepThenAct();
+    document.getElementById("bar-width").innerHTML = 'width: 10%';
     let messageToServer = 'yes';
     websocket.send(JSON.stringify(
         {

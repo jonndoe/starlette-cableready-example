@@ -4,6 +4,10 @@ from starlette.templating import Jinja2Templates
 
 from starlette.endpoints import WebSocketEndpoint
 from starlette.routing import WebSocketRoute
+from starlette.responses import Response
+
+from starlette.middleware import Middleware
+from starlette.middleware.base import BaseHTTPMiddleware
 
 import uvicorn
 import logging
@@ -18,7 +22,13 @@ templates = Jinja2Templates(directory='templates')
 class Echo(WebSocketEndpoint):
     encoding = "text"
 
+    print('Entered WebsocketEndpoint')
+
     async def on_receive(self, websocket, data):
+        ws = websocket
+        #print('Websocket is :', ws)
+        #print('Websocket header is :', ws.headers['sec-websocket-version'])
+
         datajson = json.loads(data)
         try:
             datajson['expression'] == True
@@ -30,11 +40,44 @@ class Echo(WebSocketEndpoint):
                 status += 10
 
 
-routes = [
-    WebSocketRoute("/ws", Echo)
+class Cable(WebSocketEndpoint):
+    #encoding = "text"
+
+    #async def on_connect(self, websocket) -> None:
+        #print('Connected')
+        #print('Websocket is:', websocket.headers)
+        #pass
+
+    async def on_receive(self, websocket, data):
+
+        datajson = json.loads(data)
+        try:
+            datajson['expression'] == True
+            await websocket.send_json({"expression": datajson['expression']})
+        except Exception as e:
+            status = 10
+            for i in range(10):
+                await websocket.send_json({"setAttribute": [{"selector": "#progress-bar", "name": "style", "value": f"width:{status}%"}]})
+                status += 10
+
+
+class CustomHeaderMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        response.headers['Custom'] = 'Example'
+        return response
+
+
+middleware = [
+    Middleware(CustomHeaderMiddleware),
 ]
 
-app = Starlette(routes=routes)
+routes = [
+    WebSocketRoute("/ws", Echo),
+    WebSocketRoute("/cable", Cable),
+]
+
+app = Starlette(routes=routes, middleware=middleware)
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
 

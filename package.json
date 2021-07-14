@@ -29,6 +29,7 @@
     "node": ">=12"
   },
   "dependencies": {
+    "@rails/actioncable": "^6.1.4",
     "@rails/ujs": "^6.1.4",
     "debounce": "^1.2.1",
     "debounced": "0.0.5",
